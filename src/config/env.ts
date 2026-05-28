@@ -13,10 +13,20 @@ function optional(name: string, fallback = ''): string {
   return process.env[name]?.trim() ?? fallback;
 }
 
+function optionalList(name: string): string[] {
+  const value = process.env[name]?.trim();
+  if (!value) return [];
+  return value
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
 export const env = {
   nodeEnv: optional('NODE_ENV', 'development'),
   port: Number(optional('PORT', '3000')),
   isProduction: optional('NODE_ENV', 'development') === 'production',
+  corsOrigins: optionalList('CORS_ORIGINS'),
 
   email: {
     user: required('EMAIL_USER', process.env.EMAIL_USER),
@@ -34,6 +44,7 @@ export const env = {
 
   /** Protects POST /v1/admin/api-keys — set a strong secret in production */
   masterApiKey: optional('MASTER_API_KEY'),
+  bootstrapApiKeys: optional('BOOTSTRAP_API_KEYS', 'true') !== 'false',
 
   whatsapp: {
     /** Meta WhatsApp Cloud API (free tier for development) */

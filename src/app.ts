@@ -9,14 +9,15 @@ import { notFound } from './middleware/notFound';
 
 export function createApp() {
   const app = express();
+  const isAllowAll = env.corsOrigins.length === 0;
 
   app.set('trust proxy', 1);
 
   app.use(helmet());
   app.use(
     cors({
-      origin: env.isProduction ? false : true,
-      credentials: true,
+      origin: isAllowAll ? true : env.corsOrigins,
+      credentials: false,
     }),
   );
   app.use(express.json({ limit: '1mb' }));

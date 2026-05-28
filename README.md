@@ -219,6 +219,32 @@ npm start
 - Configure Meta WhatsApp for production messaging
 - Run behind HTTPS (reverse proxy)
 
+## Deploy on Vercel
+
+This repo is now configured for Vercel serverless deployment using:
+- `api/index.ts` (serverless entrypoint)
+- `vercel.json` (all routes rewritten to the API handler)
+
+### Required Vercel environment variables
+
+- `EMAIL_USER`
+- `EMAIL_PASSWORD`
+- `MONGODB_URI` (recommended) **or** `DB_USERNAME`, `DB_PASSWORD`, `DB_CLUSTER`, `DB_NAME`
+- `WIREWEB_API_KEY` (if using WireWeb)
+
+### Recommended environment variables
+
+- `NODE_ENV=production`
+- `MASTER_API_KEY` (for `/v1/admin/*`)
+- `CORS_ORIGINS=https://your-frontend-domain.com` (comma-separated for multiple)
+- `BOOTSTRAP_API_KEYS=false` (recommended in production once keys are created)
+
+### Notes for Vercel
+
+- First invocation may be slower due to cold start and DB connect.
+- Rate limits are per serverless instance (not globally synchronized).
+- `BOOTSTRAP_API_KEYS=true` auto-creates one key when none exist; disable after setup.
+
 ## License
 
 MIT

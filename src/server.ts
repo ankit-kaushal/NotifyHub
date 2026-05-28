@@ -1,11 +1,10 @@
 import { createApp } from './app';
-import { connectDatabase, disconnectDatabase } from './config/database';
+import { disconnectDatabase } from './config/database';
 import { env } from './config/env';
-import { ensureBootstrapApiKey } from './services/apiKey.service';
+import { initializeInfrastructure } from './bootstrap';
 
 async function main(): Promise<void> {
-  await connectDatabase();
-  await ensureBootstrapApiKey();
+  await initializeInfrastructure();
 
   const app = createApp();
 
